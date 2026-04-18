@@ -1,13 +1,13 @@
-AS				= nasm
-LD				= ld
-ASFLAGS		= -f elf64
+AS = nasm
+LD = ld
+ASFLAGS = -f elf64
 
-SRC_DIR		= src
+SRC_DIR	= src
 BUILD_DIR = build
 
-SRCS			= $(wildcard $(SRC_DIR)/*.asm)
-OBJS 			= $(patsubst $(SRC_DIR)/%.asm, $(BUILD_DIR)/%.o, $(SRCS))
-TARGET		= vulcan
+SRCS = $(wildcard $(SRC_DIR)/*.asm)
+OBJS = $(patsubst $(SRC_DIR)/%.asm, $(BUILD_DIR)/%.o, $(SRCS))
+TARGET = vulcan
 
 $(BUILD_DIR)/$(TARGET): $(OBJS)
 	$(LD) $^ -o $@
