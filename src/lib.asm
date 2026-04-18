@@ -159,7 +159,7 @@ parse_uint:
   
   mov r8, 10                    ; for multiplication later
 .loop:
-  movzx r9, byte[rdi + rcx]
+  mov r9b, byte[rdi + rcx]
   cmp r9, 0
   je .end
 
