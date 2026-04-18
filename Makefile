@@ -1,6 +1,6 @@
 AS = nasm
 LD = ld
-ASFLAGS = -f elf64
+ASFLAGS = -f elf64 -g
 
 SRC_DIR	= src
 BUILD_DIR = build
