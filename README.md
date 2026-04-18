@@ -1,2 +1,2 @@
 # Vulcan
-A Forth compiler written written in assembly
+A Forth compiler written in assembly
