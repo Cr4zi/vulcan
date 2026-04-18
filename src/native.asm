@@ -19,3 +19,17 @@ section .text
 %macro native 2
 native %1, %2, 0
 %endmacro
+
+extern string_length
+
+section .text
+;; Code From Address
+;; rdi - start of an header
+cfa:
+  lea rdi, [rdi + 8]            ; skip the NATIVE_HEAD
+  call string_length
+
+  lea rax, [rdi + rax + 2]      ; + 1 skip null terminator and another one
+                                ; to skip flags
+  
+  ret
