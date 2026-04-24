@@ -21,6 +21,23 @@ extern print_int
 extern cfa
 extern parse_int
 
+section .rodata
+read_err_msg: db "Couldn't read word", 0
+
+unknown_word_msg: db "Unknown word", 0
+
+section .bss
+word_buff: resb WORD_LENGTH 
+resq 1023
+rstack_start: resq 1
+resq 65535
+memory: resq 1
+
+section .data
+program_stub: dq 0
+xt_interpreter: dq .interpreter
+.interpreter: dq interpreter_loop
+
 ;; output 
 native ".S", prints
   xor rcx, rcx
@@ -190,20 +207,44 @@ native "drop", drop             ; (a -- )
   
   jmp next
 
-section .rodata
-read_err_msg: db "Couldn't read word", 0
+;; memory
+native "mem", mem
+  push memory
+  
+  jmp next
 
-unknown_word_msg: db "Unknown word", 0
+native "!", store
+  pop rax
+  pop rcx
+  
+  mov [rcx], rax
 
-section .bss
-word_buff: resb WORD_LENGTH 
-resq 1023
-rstack_start: resq 1
+  jmp next
 
-section .data
-program_stub: dq 0
-xt_interpreter: dq .interpreter
-.interpreter: dq interpreter_loop
+native "c!", char_store
+  pop rax
+  pop rcx
+
+  mov byte[rcx], al
+
+  jmp next
+  
+native "@", read_at
+  pop rax
+
+  mov rax, [rax]
+  push rax
+  
+  jmp next
+
+native "c@", read_char_at
+  pop rcx
+  
+  xor rax, rax
+  mov al, byte[rcx]
+  push rax
+
+  jmp next
 
 section .text
 init:
