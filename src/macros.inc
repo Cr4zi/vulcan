@@ -1,11 +1,11 @@
-%define LIST_HEAD 0
+%define COLON_HEAD 0
 
 %macro colon 2
 %2:
-  dq LIST_HEAD
+  dq COLON_HEAD
   db %1, 0
   
-%define LIST_HEAD %2
+%define COLON_HEAD %2
 %endmacro
 
 %define NATIVE_HEAD 0
@@ -19,6 +19,8 @@ w_%2:
 xt_%2:
   dq %2_impl
 
+section .text
+%2_impl:
 %define NATIVE_HEAD w_%2
 
 section .text
