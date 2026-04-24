@@ -4,9 +4,9 @@ extern string_equals
 extern string_length
 
 global find_word
+global cfa
 
 section .text
-
 ;; rdi - pointer to a null terminated string - key, rsi - pointer to the last word in the dictionary
 find_word:
 .loop:
