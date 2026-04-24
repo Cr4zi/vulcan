@@ -70,7 +70,7 @@ print_uint:
   sub rsp, 32
   mov rcx, 31
 
-  mov byte [rsp + rcx], 0       ; null terminator
+  mov byte[rsp + rcx], 0       ; null terminator
 
   mov rax, rdi
 .loop:
@@ -106,32 +106,35 @@ print_int:
   neg rdi
   jmp print_uint
   
-read_char:  
+read_char:
   sub rsp, 1
 
   mov rax, 0                    ; sys_read
   mov rdi, 0                    ; stdin
-  lea rsi, [rsp]                ; pretty sure could also do mov rsi, rsp
+  lea rsi, [rsp]
   mov rdx, 1                    ; count
   syscall
   
-  mov al, byte [rsi]
+  xor rax, rax
+  mov al, byte[rsi]
   add rsp, 1
   ret
 
 ;; rdi holds a buffer addr, rsi holds buffer length
 read_word:
-  xor r12, r12
+  xor rcx, rcx
   dec rsi
 .loop:
-  cmp r12, rsi                  ; rcx ? length
+  cmp rcx, rsi                  ; rcx ? length
   je .err                       ; err ...
   
+  push rcx
   push rdi
   push rsi
   call read_char                ; rax = char
   pop rsi
   pop rdi
+  pop rcx
 
   cmp rax, 0x20
   je .end
@@ -140,16 +143,16 @@ read_word:
   cmp rax, 0x0A
   je .end
 
-  mov byte [rdi], al
+  mov byte[rdi + rcx], al
 
-  inc rdi
-  inc r12
+  inc rcx
   jmp .loop
 .err:                           ; if we read the whole buffer size
   mov rax, 0
   ret
 .end:
-  mov byte [rdi], 0                    ; null terminate
+  mov byte[rdi + rcx], 0       ; null terminate
+  mov rax, rcx
   ret
 
 ;; rdi is a null terminated string
