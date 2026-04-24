@@ -11,14 +11,17 @@ global _start
 extern find_word
 
 extern exit
+extern print_char
 extern print_string
 extern print_newline
 extern string_length
+extern read_char
 extern read_word
 extern print_int
 extern cfa
 extern parse_int
 
+;; output 
 native ".S", prints
   xor rcx, rcx
 .loop:
@@ -42,6 +45,34 @@ native ".", print
   call print_int
   call print_newline
   
+  jmp next
+
+native "emit", emit             ; (c -- )
+  pop rdi
+  call print_char
+  call print_newline
+  
+  jmp next
+  
+;; input
+native "key", key               ; ( -- c)
+  call read_char
+  push rax
+
+  call read_char                ; read '\n'
+  
+  jmp next
+
+native "number", number         ; ( -- n)
+  mov rdi, word_buff
+  mov rsi, WORD_LENGTH
+  call read_word
+  
+  mov rdi, word_buff
+  call parse_int
+
+  push rax
+
   jmp next
 
 ;; arithmetic
