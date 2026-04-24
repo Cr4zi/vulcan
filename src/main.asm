@@ -66,6 +66,59 @@ native "/", div
   
   push rax
 
+native "=", equals
+  pop rax
+  pop rcx
+  
+  cmp rax, rcx
+  jne .not_equals
+  
+  push 1
+  jmp next
+
+.not_equals:
+  push 0
+  jmp next
+
+native "<", less_than
+  pop rax
+  pop rcx
+  cmp rcx, rax
+  jl .less_than
+  
+  push 0
+  jmp next
+
+.less_than:
+  push 1
+  jmp next
+
+native "and", logic_and
+  pop rax
+  pop rcx
+  
+  and rax, rcx
+  test rax, rax
+  jz .zero
+
+  push 1
+  jmp next
+
+.zero:
+  push 0
+  jmp next
+
+native "not", logic_not
+  pop rax
+  test rax, rax
+  jz .zero
+  
+  push 0
+  jmp next
+.zero:
+  push 1
+  jmp next
+
 section .rodata
 read_err_msg: db "Couldn't read word", 0
 
