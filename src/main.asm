@@ -37,6 +37,13 @@ native ".S", prints
 .end:
   jmp next
 
+native ".", print
+  pop rdi
+  call print_int
+  call print_newline
+  
+  jmp next
+
 ;; arithmetic
 native "+", plus
   pop rax
