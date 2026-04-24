@@ -37,6 +37,7 @@ native ".S", prints
 .end:
   jmp next
 
+;; arithmetic
 native "+", plus
   pop rax
   add [rsp], rax
@@ -66,6 +67,7 @@ native "/", div
   
   push rax
 
+;; Logic
 native "=", equals
   pop rax
   pop rcx
@@ -117,6 +119,37 @@ native "not", logic_not
   jmp next
 .zero:
   push 1
+  jmp next
+
+;; Stack Manipulation
+native "rot", rot               ; (a b c -- b c a)
+  pop rax
+  pop rcx
+  pop rdx
+
+  push rcx
+  push rdx
+  push rax
+
+  jmp next
+  
+native "swap", swap             ; (a b -- b a)
+  pop rax
+  pop rcx
+  
+  push rax
+  push rcx
+  
+  jmp next
+
+native "dup", dup               ; (a -- a a)
+  push qword[rsp]
+  
+  jmp next
+
+native "drop", drop             ; (a -- )
+  pop rax
+  
   jmp next
 
 section .rodata
