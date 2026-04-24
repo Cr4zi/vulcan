@@ -1,6 +1,7 @@
 ;; this is more like a linked list, not actually a dictionary
   
 extern string_equals
+extern string_length
 
 global find_word
 
@@ -27,4 +28,15 @@ find_word:
   ret
 .not_found:
   mov rax, 0
+  ret
+
+;; Code From Address
+;; rdi - start of an header
+cfa:
+  lea rdi, [rdi + 8]            ; skip the NATIVE_HEAD
+  call string_length
+
+  lea rax, [rdi + rax + 2]      ; + 1 skip null terminator and another one
+                                ; to skip flags
+  
   ret

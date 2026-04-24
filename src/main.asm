@@ -1,4 +1,4 @@
-%include "src/colon.inc"
+%include "src/macros.inc"
 
 global _start
 
