@@ -19,7 +19,6 @@ w_%2:
 xt_%2:
   dq %2_impl
 
-section .text
 %2_impl:
 %define NATIVE_HEAD w_%2
 
